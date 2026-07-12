@@ -5,17 +5,24 @@ import { useState } from "react";
 import { supabase } from "@/lib/supabase";
 
 export default function Home() {
-
+const apartments = [
+  "대림아크로빌",
+  "아카데미스위트"
+];
   const [dong, setDong] = useState("");
   const [ho, setHo] = useState("");
   const [voteNumber, setVoteNumber] = useState("");
   const [vote, setVote] = useState("");
+  const [apt, setApt] = useState("");
 
   const [message, setMessage] = useState("");
 
 
 const handleSubmit = async () => {
-
+  if (!apt) {
+  setMessage("⚠ 아파트를 선택해주세요.");
+  return;
+}
   if (!dong) {
     setMessage("⚠ 동을 입력해주세요.");
     return;
@@ -52,6 +59,7 @@ if (codeError || !validCode) {
     .from("votes")
     .insert([
       {
+        apt: apt,
         code: voteNumber,
         choice: vote
       }
@@ -124,6 +132,31 @@ if (codeError || !validCode) {
             <h3 className="font-bold text-lg mb-3">
               📢 사업 안내
             </h3>
+            <select
+
+  value={apt}
+
+  onChange={(e)=>setApt(e.target.value)}
+
+  className="w-full border rounded-lg p-3 mb-3"
+
+>
+
+<option value="">
+  아파트 선택
+</option>
+
+
+{
+  apartments.map((item)=>(
+    <option key={item} value={item}>
+      {item}
+    </option>
+  ))
+}
+
+
+</select>
 
 
             <p className="text-gray-700 leading-relaxed">
